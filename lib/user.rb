@@ -14,5 +14,10 @@ class User < ActiveRecord::Base
           puts "Welcome #{name}! Your account has been created."
       end 
   end 
+ 
+
+
+
+  # User can view all their applications
 
 end
