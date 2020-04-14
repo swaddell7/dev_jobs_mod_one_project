@@ -1,6 +1,6 @@
-User.create(name: "Ashley", email: "ash.etemadi@gmail.com")
-User.create(name: "Stefani", email: "stefani.waddell@hotmail.com", location: "Chicago")
-User.create(name: "Duke", email: "duke.greene@flatironschool.com")
+User.create(name: "Ashley", email_address: "ash.etemadi@gmail.com")
+User.create(name: "Stefani", email_address: "stefani.waddell@hotmail.com", location: "Chicago")
+User.create(name: "Duke", email_address: "duke.greene@flatironschool.com")
 
 Job.create(title: "Ruby Developer", company: "Crafty", location: "Chicago", programming_language: "Ruby", description: "Crafty is seeking a developer with experience in Ruby on Rails to join our rapidly growing team! We are looking to add to our group of close-knit developers and product designers who work to automate and streamline the day to day needs of both our internal processes and clients needs. Were building out internal APIs, internal tools, client facing dashboards, purchasing/recommendation algorithms, reporting capabilities...you name it, were finding a way to build it. Our team is small but mighty, so you can expect to be involved in all facets of technological problems.")
 Job.create(title: "Ruby on Rails Developer", company: "Jobspring Partners", company_url: "https://motionrecruitment.com/?o=js", location: "Chicago", programming_language: "Ruby on Rails", description: "An established start-up located in the Chicago Loop is looking for a Full Stack Ruby on Rails Engineer to join their fast-growing team to help maintain and add new features to their platform that automates customizable marketing materials for commercial real estate.")

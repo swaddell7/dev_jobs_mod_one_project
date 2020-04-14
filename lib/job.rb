@@ -1,4 +1,4 @@
-class Job < ActiveRecord::Migration[5.1]
+class Job < ActiveRecord::Base
     has_many :applications 
     has_many :users, through: :applications
 end 
