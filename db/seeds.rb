@@ -1,3 +1,6 @@
+User.destroy_all
+Job.destroy_all
+
 User.create(name: "Ashley", email_address: "ash.etemadi@gmail.com")
 User.create(name: "Stefani", email_address: "stefani.waddell@hotmail.com", location: "Chicago")
 User.create(name: "Duke", email_address: "duke.greene@flatironschool.com")
