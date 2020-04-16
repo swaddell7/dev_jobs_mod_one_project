@@ -5,7 +5,7 @@ class Job < ActiveRecord::Base
   def self.search_jobs(language, city)
     i = 0
     self.where(programming_language: language, location: city).each do |job|
-      puts "##{i + 1}"
+      puts "#{i + 1}."
       puts "Title: #{job["title"]}"
       puts "Company: #{job["company"]}"
       if job["company_url"]

@@ -5,16 +5,21 @@ prompt = TTY::Prompt.new
 puts "\e[H\e[2J"
 puts "Welcome to the Dev Jobs Portal!"
 puts ""
-puts "Please enter your fabulous name."
+
+puts "Please enter your fabulous name:"
 name = gets.chomp
 puts ""
-puts "Please enter your email address."
+
+puts "Please enter your email address:"
 email = gets.chomp
 puts ""
+
 User.has_account?(name, email)
 sleep(1)
 puts "\e[H\e[2J"
+
 account = User.find_by(name: name, email_address: email)
+
 user_input = nil
 
 while user_input != "exit"
@@ -31,43 +36,42 @@ while user_input != "exit"
 
   when "Search & Apply For Jobs"
     puts ""
-    puts "Which programming language would you like to get a job in?"
-    programming_language = gets.chomp
+    puts "Please specify a programming language to begin your search:"
+    programming_language = gets.chomp.capitalize
     puts ""
-    puts "Which city would you like to work in?"
-    city = gets.chomp
+
+    puts "In what city would you like to search for jobs?"
+    city = gets.chomp.capitalize
     puts "\e[H\e[2J"
+
     puts "Below are all the #{programming_language} jobs in the #{city} area:"
     puts ""
+
     Job.search_jobs(programming_language, city)
+
     wants_to_apply = prompt.select("Would you like to apply to any of the above jobs?", %w(Yes No))
+
     case wants_to_apply
     when "Yes"
-      puts "Please enter the number corresponding to the job you would like to apply to."
-
-      # User enters number, which corresponds to (number - 1) element in the search_jobs array
+      puts "Please enter the number corresponding to the job to which you would like to apply:"
       job_number = gets.chomp
 
-      # User indicates number of job they want from list, returns job instance
       selected_job = account.select_job(job_number, programming_language, city)
 
-      # User applies to job (argument is job instance)/new application is created
       account.create_application(selected_job)
       puts ""
       puts "Congratulations, you've applied for the #{selected_job.title} position at #{selected_job.company}!"
       puts ""
       sleep(1)
+
       wants_to_apply_again = prompt.select("Would you like to apply to another job?", %w(Yes No))
       while wants_to_apply_again == "Yes"
-        puts "Please enter the number corresponding to the job you would like to apply to."
+        puts "Please enter the number corresponding to the job to which you would like to apply:"
 
-        # User enters number, which corresponds to (number - 1) element in the search_jobs array
         job_number = gets.chomp
 
-        # User indicates number of job they want from list, returns job instance
         selected_job = account.select_job(job_number, programming_language, city)
 
-        # User applies to job (argument is job instance)/new application is created
         account.create_application(selected_job)
         puts ""
         puts "Congratulations, you've applied for the #{selected_job.title} position at #{selected_job.company}!"
@@ -77,9 +81,25 @@ while user_input != "exit"
         puts ""
       end
     end
+
   when "View & Delete Applications"
-    puts "Meow"
+    puts "\e[H\e[2J"
+    puts "The following are the jobs for which you've submitted an application:"
+    puts ""
+    account.view_applications
+    next_step = prompt.select("What would you like to do next?", ["Return to Main Menu", "Delete an Existing Application"])
+
+    case next_step
+    when "Delete an Existing Application"
+      puts "Please enter the number corresponding to the application you would like to delete:"
+      app_selection = gets.chomp.to_i
+   #not sure exactly where to go from here! created delete_application method in user.rb but not sure how to isolate and delete instance!!
+   #also, when running through this, it FLASHES the puts statement below before returning to the main menu...how to fix?
+      puts "You've successfully deleted application #{app_selection}!"
+    end
+
   when "Account Info"
+    puts "\e[H\e[2J"
     account.account_information
     puts ""
     change_account_info = prompt.select("Would you like to edit your account information?", %w(Yes No))
