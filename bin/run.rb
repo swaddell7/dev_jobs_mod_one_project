@@ -37,11 +37,11 @@ while user_input != "exit"
   when "Search & Apply For Jobs"
     puts ""
     puts "Please specify a programming language to begin your search:"
-    programming_language = gets.chomp.capitalize
+    programming_language = gets.chomp
     puts ""
 
     puts "In what city would you like to search for jobs?"
-    city = gets.chomp.capitalize
+    city = gets.chomp
     puts "\e[H\e[2J"
 
     puts "Below are all the #{programming_language} jobs in the #{city} area:"
@@ -92,10 +92,13 @@ while user_input != "exit"
     case next_step
     when "Delete an Existing Application"
       puts "Please enter the number corresponding to the application you would like to delete:"
-      app_selection = gets.chomp.to_i
+      app_number = gets.chomp.to_i
    #not sure exactly where to go from here! created delete_application method in user.rb but not sure how to isolate and delete instance!!
    #also, when running through this, it FLASHES the puts statement below before returning to the main menu...how to fix?
-      puts "You've successfully deleted application #{app_selection}!"
+      account.delete_application(app_number)
+       puts ""
+       puts "You've successfully deleted application #{app_number}!"
+      sleep(2)
     end
 
   when "Account Info"
