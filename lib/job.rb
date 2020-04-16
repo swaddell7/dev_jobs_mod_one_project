@@ -2,14 +2,21 @@ class Job < ActiveRecord::Base
   has_many :applications
   has_many :users, through: :applications
 
+  def self.api_job_exists?(job, language, city)
+    if !self.find_by(title: job["title"], company: job["company"], company_url: job["company_url"], programming_language: language, location: city, description: job["description"])
+      self.create(title: job["title"], company: job["company"], company_url: job["company_url"], programming_language: language, location: city, description: job["description"])
+    end
+  end
+
   def self.search_jobs(language, city)
     i = 0
-    self.where(programming_language: language, location: city).each do |job|
+    parse_json(language, city).each do |job|
+      self.api_job_exists?(job, language, city)
       puts "#{i + 1}."
       puts "Title: #{job["title"]}"
       puts "Company: #{job["company"]}"
       if job["company_url"]
-        puts "Company URL #{job["company_url"]}"
+        puts "Company website: #{job["company_url"]}"
       end
       puts "Description: #{job["description"]}"
       puts "\n\n"

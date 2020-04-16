@@ -1,24 +1,13 @@
 require_relative "../config/environment"
+require "tty-prompt"
 
 prompt = TTY::Prompt.new
+# font = TTY::Font.new
+# pastel = Pastel.new
 
 puts "\e[H\e[2J"
-puts "Welcome to the Dev Jobs Portal!"
-puts ""
-
-puts "Please enter your fabulous name:"
-name = gets.chomp
-puts ""
-
-puts "Please enter your email address:"
-email = gets.chomp
-puts ""
-
-User.has_account?(name, email)
-sleep(1)
-puts "\e[H\e[2J"
-
-account = User.find_by(name: name, email_address: email)
+puts CommandInterface.render_ascii_art
+account = User.verified
 
 user_input = nil
 
@@ -26,81 +15,59 @@ while user_input != "exit"
   def main_menu(prompt, account)
     puts "\e[H\e[2J"
     puts "Hi, #{account.name}!"
+    puts ""
     prompt.select("Choose one of the following:", ["Search & Apply For Jobs", "View & Delete Applications", "Account Info", "Log Out"])
   end
 
   user_input = main_menu(prompt, account)
-
   puts ""
-  case user_input
 
+  case user_input
   when "Search & Apply For Jobs"
+    ## CAN THIS BE REFACTORED INTO THE USER OR COMMANDINTERFACE CLASS?
     puts ""
     puts "Please specify a programming language to begin your search:"
     programming_language = gets.chomp
     puts ""
-
     puts "In what city would you like to search for jobs?"
     city = gets.chomp
     puts "\e[H\e[2J"
-
     puts "Below are all the #{programming_language} jobs in the #{city} area:"
     puts ""
-
-    Job.search_jobs(programming_language, city)
-
+    Job.search_jobs(programming_language, city) ## REPLACED BY API
     wants_to_apply = prompt.select("Would you like to apply to any of the above jobs?", %w(Yes No))
-
     case wants_to_apply
     when "Yes"
-      puts "Please enter the number corresponding to the job to which you would like to apply:"
-      job_number = gets.chomp
-
-      selected_job = account.select_job(job_number, programming_language, city)
-
+      selected_job = account.apply_to_job(programming_language, city)
       account.create_application(selected_job)
-      puts ""
-      puts "Congratulations, you've applied for the #{selected_job.title} position at #{selected_job.company}!"
-      puts ""
-      sleep(1)
-
+      CommandInterface.congratulate_user_for_application(selected_job)
       wants_to_apply_again = prompt.select("Would you like to apply to another job?", %w(Yes No))
       while wants_to_apply_again == "Yes"
-        puts "Please enter the number corresponding to the job to which you would like to apply:"
-
-        job_number = gets.chomp
-
-        selected_job = account.select_job(job_number, programming_language, city)
-
+        selected_job = account.apply_to_job(programming_language, city)
         account.create_application(selected_job)
-        puts ""
-        puts "Congratulations, you've applied for the #{selected_job.title} position at #{selected_job.company}!"
-        puts ""
-        sleep(1)
+        CommandInterface.congratulate_user_for_application(selected_job)
         wants_to_apply_again = prompt.select("Would you like to apply to another job?", %w(Yes No))
         puts ""
       end
     end
-
   when "View & Delete Applications"
+    # CommandInterface.applications_list_header (delete next 3 lines)
     puts "\e[H\e[2J"
     puts "The following are the jobs for which you've submitted an application:"
     puts ""
     account.view_applications
     next_step = prompt.select("What would you like to do next?", ["Return to Main Menu", "Delete an Existing Application"])
-
     case next_step
     when "Delete an Existing Application"
       puts "Please enter the number corresponding to the application you would like to delete:"
       app_number = gets.chomp.to_i
-   #not sure exactly where to go from here! created delete_application method in user.rb but not sure how to isolate and delete instance!!
-   #also, when running through this, it FLASHES the puts statement below before returning to the main menu...how to fix?
+      #not sure exactly where to go from here! created delete_application method in user.rb but not sure how to isolate and delete instance!!
+      #also, when running through this, it FLASHES the puts statement below before returning to the main menu...how to fix?
       account.delete_application(app_number)
-       puts ""
-       puts "You've successfully deleted application #{app_number}!"
+      puts ""
+      puts "You've successfully deleted application #{app_number}!"
       sleep(2)
     end
-
   when "Account Info"
     puts "\e[H\e[2J"
     account.account_information
@@ -119,6 +86,7 @@ while user_input != "exit"
         account.save
         puts ""
         puts "Your name has been updated."
+        sleep(2)
       when "Email"
         puts "Enter the new email you would like to use."
         new_email = gets.chomp
@@ -126,9 +94,11 @@ while user_input != "exit"
         account.save
         puts ""
         puts "Your email address has been updated."
+        sleep(2)
       end
     when "No"
       puts "Great, we won't make any changes to your account."
+      sleep(2)
     end
   when "Log Out"
     user_input = "exit"
