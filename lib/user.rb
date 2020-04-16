@@ -48,16 +48,21 @@ class User < ActiveRecord::Base
     end
   end
 
-  def delete_application(app_selection)
-  #refer to run.rb line 95 -- need to finish this one up!
-  end    
+def application_ids
+  self.applications.map { |application| application.id }
+end
+
+def delete_application(app_number)
+  selected_app_id = self.application_ids[app_number - 1]
+  self.applications.delete(selected_app_id)
+end    
 
 
 
 
 
 
-  
+
     # #   puts "Title: #{job["title"]}"
     #   puts "Company: #{job["company"]}"
     #   if application.job["company_url"]
