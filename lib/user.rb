@@ -30,22 +30,43 @@ class User < ActiveRecord::Base
     puts "Email: #{self.email_address}"
   end
 
+ 
+
   def view_applications
-    job_ids = self.applications.map do |application|
-      application.job_id
-    end
-    job_ids.each do |job|
-      binding.pry
+    i=0
+    job_ids = self.applications.map {|application| application.job_id }
+    jobs_applied = job_ids.map {|id| Job.find_by(id: id) }
+    jobs_applied.uniq.each do |job|
+      puts "#{i + 1}."
       puts "Title: #{job["title"]}"
       puts "Company: #{job["company"]}"
-      if application.job["company_url"]
-        puts "Company URL: #{job["company_url"]}"
-      end
       puts "Location: #{job["location"]}"
       puts "Programming Language: #{job["programming_language"]}"
       puts "Description: #{job["description"]}"
+      puts ""
+      i+=1
     end
   end
+
+  def delete_application(app_selection)
+  #refer to run.rb line 95 -- need to finish this one up!
+  end    
+
+
+
+
+
+
+  
+    # #   puts "Title: #{job["title"]}"
+    #   puts "Company: #{job["company"]}"
+    #   if application.job["company_url"]
+    #     puts "Company URL: #{job["company_url"]}"
+    #   end
+    #   puts "Location: #{job["location"]}"
+    #   puts "Programming Language: #{job["programming_language"]}"
+    #   puts "Description: #{job["description"]}"
+    # # end
 
   # def self.view_all_for_user(name, email)
   #   user_applications = self.all.where(user_id: User.find_by(name: name, email_address: email).id)
