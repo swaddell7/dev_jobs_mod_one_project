@@ -6,11 +6,6 @@ class CommandInterface
     puts "Would you like to apply to any of the above jobs? Please respond Y or N."
   end
 
-  # def main_menu(prompt, account)
-  #   puts "Hi, #{account.name}!"
-  #   prompt.select("Choose one of the following:", ["Search & Apply For Jobs", "View & Delete Applications", "Account Info"])
-  # end
-
   def self.render_ascii_art
     File.readlines("lib/ascii.txt") do |line|
       line

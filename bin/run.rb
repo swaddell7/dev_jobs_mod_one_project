@@ -14,7 +14,7 @@ user_input = nil
 while user_input != "exit"
   def main_menu(prompt, account)
     puts "\e[H\e[2J"
-    puts "Hi, #{account.name}!"
+    puts "Hi, #{account.name}... you're going to rock this process!"
     puts ""
     prompt.select("Choose one of the following:", ["Search & Apply For Jobs", "View & Delete Applications", "Account Info", "Log Out"])
   end
@@ -34,50 +34,22 @@ while user_input != "exit"
     puts "\e[H\e[2J"
     puts "Below are all the #{programming_language} jobs in the #{city} area:"
     puts ""
-    # Job.search_jobs(programming_language, city) ## REPLACED BY API
-   
-    def description(job_description)
-      description_chunk_index = job_description.index("</p>")
-      description_chunk = job_description.chars.take(description_chunk_index).join
-      # gsub = description_chunk.gsub!(/(<[^>]*>)|\n|\t/s) {" "}
-      # if gsub.length > 50
-      #   puts "Description:"
-      #   puts gsub
-      # else
+    api_jobs = Job.search_jobs(programming_language, city)
+    case api_jobs
+    when []
+      puts "Sorry, this database does not currently any available #{programming_language} positions in #{city}."
+      # puts "Sorry, this database does not currently any available #{programming_language} positions in #{city}. You are being re-routed to another database..."
+      sleep(3)
+      # puts "\e[H\e[2J"
+      # puts "Below are all the #{programming_language} jobs in the #{city} area:"
+      # seeded_jobs = Job.search_seed(programming_language, city)
+      # case seeded_jobs
+      # when []
       #   puts ""
+      #   puts "Seems like you're outta luck right now... this database does not currently any available #{programming_language} positions in #{city} either."
       # end
-      description_chunk_without_p_tag = description_chunk.delete("<p>")
-      p_tag_index_one = description_chunk.index("<")
-      p_tag_index_two = description_chunk.index(">")
-      first_part = description_chunk.chars.take(p_tag_index_one).join
-      second_part = description_chunk.chars.drop(p_tag_index_two + 1).join
-      if (first_part + second_part).length > 100
-        puts "Description:"
-        puts first_part + second_part
-      else 
-        puts ""
-      end  
-    end 
-
-    def search_jobs(language, city)
-      i = 0
-      parse_json(language, city).each do |job|
-        Job.api_job_exists?(job, language, city)
-        puts "#{i + 1}."
-        puts "Title: #{job["title"]}"
-        puts "Company: #{job["company"]}"
-        if job["company_url"]
-          puts "Company website: #{job["company_url"]}"
-        end
-        description = description(job["description"])
-        
-        puts "\n\n"
-        i += 1
-      end
     end
-
-    search_jobs(programming_language, city)
-
+    puts ""
     wants_to_apply = prompt.select("Would you like to apply to any of the above jobs?", %w(Yes No))
     case wants_to_apply
     when "Yes"
@@ -108,7 +80,7 @@ while user_input != "exit"
       #also, when running through this, it FLASHES the puts statement below before returning to the main menu...how to fix?
       account.delete_application(app_number)
       puts ""
-      puts "You've successfully deleted application #{app_number}!"
+      puts "You've successfully deleted application ##{app_number}!"
       sleep(2)
     end
   when "Account Info"

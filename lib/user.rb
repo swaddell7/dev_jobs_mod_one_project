@@ -1,3 +1,5 @@
+require_relative "command_interface.rb"
+
 class User < ActiveRecord::Base
   has_many :applications
   has_many :jobs, through: :applications
@@ -53,13 +55,16 @@ class User < ActiveRecord::Base
     i = 0
     job_ids = self.applications.map { |application| application.job_id }
     jobs_applied = job_ids.map { |id| Job.find_by(id: id) }
-    jobs_applied.uniq.each do |job|
+    jobs_applied.each do |job|
       puts "#{i + 1}."
       puts "Title: #{job["title"]}"
       puts "Company: #{job["company"]}"
       puts "Location: #{job["location"]}"
       puts "Programming Language: #{job["programming_language"]}"
-      puts "Description: #{job["description"]}"
+      # Job.description(job["description"])
+      if job["description"][0] != "<"
+        puts "Description: #{job["description"]}"
+      end
       puts ""
       i += 1
     end
