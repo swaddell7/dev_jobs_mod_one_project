@@ -34,7 +34,50 @@ while user_input != "exit"
     puts "\e[H\e[2J"
     puts "Below are all the #{programming_language} jobs in the #{city} area:"
     puts ""
-    Job.search_jobs(programming_language, city) ## REPLACED BY API
+    # Job.search_jobs(programming_language, city) ## REPLACED BY API
+   
+    def description(job_description)
+      description_chunk_index = job_description.index("</p>")
+      description_chunk = job_description.chars.take(description_chunk_index).join
+      # gsub = description_chunk.gsub!(/(<[^>]*>)|\n|\t/s) {" "}
+      # if gsub.length > 50
+      #   puts "Description:"
+      #   puts gsub
+      # else
+      #   puts ""
+      # end
+      description_chunk_without_p_tag = description_chunk.delete("<p>")
+      p_tag_index_one = description_chunk.index("<")
+      p_tag_index_two = description_chunk.index(">")
+      first_part = description_chunk.chars.take(p_tag_index_one).join
+      second_part = description_chunk.chars.drop(p_tag_index_two + 1).join
+      if (first_part + second_part).length > 100
+        puts "Description:"
+        puts first_part + second_part
+      else 
+        puts ""
+      end  
+    end 
+
+    def search_jobs(language, city)
+      i = 0
+      parse_json(language, city).each do |job|
+        Job.api_job_exists?(job, language, city)
+        puts "#{i + 1}."
+        puts "Title: #{job["title"]}"
+        puts "Company: #{job["company"]}"
+        if job["company_url"]
+          puts "Company website: #{job["company_url"]}"
+        end
+        description = description(job["description"])
+        
+        puts "\n\n"
+        i += 1
+      end
+    end
+
+    search_jobs(programming_language, city)
+
     wants_to_apply = prompt.select("Would you like to apply to any of the above jobs?", %w(Yes No))
     case wants_to_apply
     when "Yes"
