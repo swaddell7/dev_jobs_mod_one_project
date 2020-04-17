@@ -1,5 +1,3 @@
-require_relative "command_interface.rb"
-
 class User < ActiveRecord::Base
   has_many :applications
   has_many :jobs, through: :applications
@@ -61,7 +59,6 @@ class User < ActiveRecord::Base
       puts "Company: #{job["company"]}"
       puts "Location: #{job["location"]}"
       puts "Programming Language: #{job["programming_language"]}"
-      # Job.description(job["description"])
       if job["description"][0] != "<"
         puts "Description: #{job["description"]}"
       end
@@ -74,32 +71,30 @@ class User < ActiveRecord::Base
     self.applications.map { |application| application.id }
   end
 
-  def delete_application(app_number)
+  def delete_application
+    puts "Please enter the number corresponding to the application you would like to delete:"
+    app_number = gets.chomp.to_i
     selected_app_id = self.application_ids[app_number - 1]
-    self.applications.delete(selected_app_id)
+    deleted_app = self.applications.delete(selected_app_id)
+    puts ""
+    puts "You've successfully deleted your application for the #{deleted_app[0].job.title} position at #{deleted_app[0].job.company}!"
   end
 
-  # #   puts "Title: #{job["title"]}"
-  #   puts "Company: #{job["company"]}"
-  #   if application.job["company_url"]
-  #     puts "Company URL: #{job["company_url"]}"
-  #   end
-  #   puts "Location: #{job["location"]}"
-  #   puts "Programming Language: #{job["programming_language"]}"
-  #   puts "Description: #{job["description"]}"
-  # # end
+  def change_name
+    puts "Enter the new name you would like to use."
+    new_name = gets.chomp
+    self.name = new_name
+    self.save
+    puts ""
+    puts "Your name has been updated."
+  end 
 
-  # def self.view_all_for_user(name, email)
-  #   user_applications = self.all.where(user_id: User.find_by(name: name, email_address: email).id)
-  #   user_applications.each do |application|
-  #     puts "Title: #{application.job["title"]}"
-  #     puts "Company: #{application.job["company"]}"
-  #     if application.job["company_url"]
-  #       puts "Company URL: #{application.job["company_url"]}"
-  #     end
-  #     puts "Description: #{application.job["description"]}"
-  #   end
-  # end
-  # User can view all their applications
-
+  def change_email
+    puts "Enter the new email you would like to use."
+    new_email = gets.chomp
+    self.email_address = new_email
+    self.save
+    puts ""
+    puts "Your email address has been updated."
+  end 
 end
