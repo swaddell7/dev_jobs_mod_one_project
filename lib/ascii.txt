@@ -7,7 +7,7 @@
      \_____\___/|_| |_| |_|_| |_| |_|\__,_|_| |_|\__,_|  \____/ \___/|_.__/|___/
                                                                                 
 
-    _______________  Your path to dev jobs through command line  _______________ 
+    _______________  Your Path to Dev Jobs through Command Line  _______________ 
                                                                              
 
 

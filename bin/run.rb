@@ -82,6 +82,18 @@ while user_input != "exit"
       puts ""
       puts "You've successfully deleted application ##{app_number}!"
       sleep(2)
+      delete_another = prompt.select("What would you like to do next?", ["Return to Main Menu", "Delete Another Application"])
+      while delete_another == "Delete Another Application"
+        puts "Please enter the number corresponding to the application you would like to delete:"
+        app_number = gets.chomp.to_i
+        account.delete_application(app_number)
+        puts "You've successfully deleted application ##{app_number}!"
+        sleep(2)
+        delete_another = prompt.select("What would you like to do next?", ["Return to Main Menu", "Delete Another Application"])
+        puts ""
+      end
+    # when "Return to Main Menu"
+    #    main_menu(prompt, account)
     end
   when "Account Info"
     puts "\e[H\e[2J"
