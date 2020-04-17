@@ -6,11 +6,11 @@
 
 ## Getting Started:
 
-  Fork and clone this repository.
-
-  Run 'bundle install'
-
-  Once you've bundled, run 'ruby bin/run.rb' to open the application.
+  Follow instructions below for setup:
+  
+  1. Fork and clone this repository.
+  2. Run 'bundle install'
+  3. Once you've bundled, run 'ruby bin/run.rb' to open the application.
 
 ## Navigation
 
@@ -25,7 +25,7 @@
   Note: If you have feedback on our app, please do not hesitate to reach out!
 
  __________________________________________________________________________________________________________________________________
- 
+
 
 # Module One Final Project Guidelines
 
