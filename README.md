@@ -1,3 +1,32 @@
+# Command Jobs: Your Path to Dev Jobs through Command Line
+
+  Welcome to Dev Jobs! This app will you allow you to search for available developer jobs by programming language and city.
+
+  Our app is pulling from the GitHub jobs database.
+
+## Getting Started:
+
+  Fork and clone this repository.
+
+  Run 'bundle install'
+
+  Once you've bundled, run 'ruby bin/run.rb' to open the application.
+
+## Navigation
+
+  Once you open the application you will be prompted to enter your name and email address. If you've visited before, use the same name and email address you used before, otherwise a new account will be created for you. If you're new here, your name and email address will generate a new account.
+
+  After login, navigate the main menu with your up/down arrows to Search/Apply for Jobs, View/Delete Applications, and View/Edit Account Information. Follow the prompts within each category to complete actions.
+
+  When you are done in the Dev Jobs portal, use the Logout option to exit a session.
+
+  Thank you, and good luck on your job search!
+
+  Note: If you have feedback on our app, please do not hesitate to reach out!
+
+ __________________________________________________________________________________________________________________________________
+ 
+
 # Module One Final Project Guidelines
 
 Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
