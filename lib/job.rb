@@ -49,6 +49,7 @@ class Job < ActiveRecord::Base
     end
   end
 
+## PULLING DATA FROM SEED (IN ADDITION TO API)
   # def self.search_seed(language, city)
   #   i = 0
   #   jobs = self.all.where(programming_language: language, location: city)
